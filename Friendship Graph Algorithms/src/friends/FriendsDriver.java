@@ -6,6 +6,7 @@ public class FriendsDriver
 	{
 		System.out.println("hi");
 	}
+	//works?
 }
 
 
