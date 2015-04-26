@@ -30,7 +30,8 @@ public class Graph
 			count++;
 		}
 		
-		System.out.println(graph);
+		System.out.println("Graph Before Adding Edges:");
+		printGraph();
 		
 		while (sc.hasNextLine())
 		{
@@ -38,7 +39,8 @@ public class Graph
 			addEdge(line);
 		}
 		
-		System.out.println(graph);
+		System.out.println("\nGraph After Adding Edges:");
+		printGraph();
 	}
 
 	private Person createPerson(String line)
@@ -58,5 +60,13 @@ public class Graph
 		edges.add(graph.get(parts[1]).get(0));
 		edges = graph.get(parts[1]);
 		edges.add(graph.get(parts[0]).get(0));
-	}	
+	}
+	
+	private void printGraph()
+	{
+		for (String key : graph.keySet())
+		{
+			System.out.printf( "%-12s %s %n", key, graph.get(key));
+		}
+	}
 }
