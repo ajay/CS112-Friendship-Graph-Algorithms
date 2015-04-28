@@ -9,8 +9,13 @@ import java.lang.*;
 
 public class Graph
 {
-	HashMap<String, ArrayList<Person>> graph = new HashMap<String, ArrayList<Person>>();
+	HashMap<String, Person> graph = new HashMap<String, Person>();
 
+	///// Build Graph
+	public Graph()
+	{
+	}
+	
 	public Graph(String graphFile) throws FileNotFoundException
 	{
 		if (graphFile == null)
@@ -18,55 +23,112 @@ public class Graph
 
 		Scanner sc = new Scanner(new File(graphFile));
 		int numberOfPeople = Integer.parseInt(sc.nextLine());
-		
+
 		int count = 0;
 		while (count < numberOfPeople)
 		{
 			String line = sc.nextLine();
 			Person p = createPerson(line);
-			ArrayList<Person> edges = new ArrayList<Person>();
-			graph.put(p.name, edges);
-			edges.add(p);
+			graph.put(p.name, p);
 			count++;
 		}
-		
-		System.out.println("Graph Before Adding Edges:");
-		printGraph();
-		
+
 		while (sc.hasNextLine())
 		{
 			String line = sc.nextLine();
 			addEdge(line);
 		}
-		
-		System.out.println("\nGraph After Adding Edges:");
-		printGraph();
+		sc.close();
 	}
 
 	private Person createPerson(String line)
 	{
 		String[] parts = line.split("\\|");
-		
+
 		if (parts.length == 3)
 			return new Person(parts[0], parts[2]);
-		
+
 		else return new Person(parts[0]);
 	}
-	
+
 	private void addEdge(String line)
 	{
 		String[] parts = line.split("\\|");
-		ArrayList<Person> edges = graph.get(parts[0]);
-		edges.add(graph.get(parts[1]).get(0));
-		edges = graph.get(parts[1]);
-		edges.add(graph.get(parts[0]).get(0));
+		ArrayList<Person> neighbors = graph.get(parts[0]).neighbors;
+		neighbors.add(graph.get(parts[1]));
+		neighbors = graph.get(parts[1]).neighbors;
+		neighbors.add(graph.get(parts[0]));
 	}
+
 	
-	private void printGraph()
+	///// Print Graph
+	public void printGraph()
 	{
+		System.out.println();
 		for (String key : graph.keySet())
 		{
-			System.out.printf( "%-12s %s %n", key, graph.get(key));
+			System.out.printf( "%-15s %-25s -->     %s %n", key, graph.get(key), graph.get(key).neighbors);
 		}
+	}
+	
+	///// Shortest Chain
+	public void shortestChain()
+	{
+		Scanner sc = new Scanner(System.in);
+		String personOne = null;
+		String personTwo = null;
+		
+		boolean goodName = false;
+		while (!goodName)
+		{
+			System.out.print("\nEnter the first person: ");
+			personOne = sc.nextLine();
+			if (graph.containsKey(personOne))
+				goodName = true;
+			else System.out.println("'"+personOne+"' is not a valid person");
+		}
+		
+		goodName = false;
+		while (!goodName)
+		{
+			System.out.print("Enter the second person: ");
+			personTwo = sc.nextLine();		
+			if (graph.containsKey(personTwo))
+				goodName = true;
+			else System.out.println("\n'"+personTwo+"' is not a valid person");
+		}
+		
+		HashMap<Person, Integer> distances = new HashMap<Person, Integer>();
+		
+		for (String key : graph.keySet())
+			distances.put(graph.get(key), -1);
+		
+		Person origin = graph.get(personOne);
+		Person target = graph.get(personTwo);
+		
+		distances.put(origin, 0);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		for (Person key : distances.keySet())
+			System.out.println(key+" "+distances.get(key));
+	
+		
+		
+		
+		
+		
+		
+		
 	}
 }
