@@ -98,77 +98,129 @@ public class Graph
 			else System.out.println("\n'"+personTwo+"' is not a valid person");
 		}
 		
-//		sc.close();
-		
 		Person origin = graph.get(personOne);
 		Person target = graph.get(personTwo);
 		
-		shortest(origin, target);
+		HashMap<Person, Integer> height = heightMap(origin);
+		
+//		shortest(origin, target);
 		
 		
-//		HashMap<Person, Integer> distances = new HashMap<Person, Integer>();
-//		
-//		for (String key : graph.keySet())
-//			distances.put(graph.get(key), -1);
-//		
-
-//		
-//		distances.put(origin, 0);
-//		
-//		ArrayList<Person> path = new ArrayList<Person>();
-//		path.add(origin);
-//		
-//		while (path.get(path.size()-1) != target)
-//		{
-//			System.out.println("\n");
-//			for (Person key : distances.keySet())
-//				System.out.println(key+" "+distances.get(key));
-//			
-//			
-//			Person min = null;
-//			int minimum = 999999999;
-//			
-//			for (Person key : distances.keySet())
-//			{
-//				if ((distances.get(key) >= 0) && (distances.get(key) <= minimum))
-//				{
-//					min = key;
-//					minimum = distances.get(key);
-//				}
-//			}
-//			
-////			System.out.println("min is "+min);
-//
-//			for (Person n : min.neighbors)
-//			{
-//				if (distances.containsKey(n))
-//					distances.put(n, minimum + 1);
-//			}
-//			
-//			if (path.get(path.size()-1).neighbors.contains(min))
-//				path.add(min);
-//			distances.remove(min);
-//			
-////			System.out.println(distances.size());
-////			for (Person p : path)
-////				System.out.print(p+" --> ");
-//			
-//		}
-//		
-//		
-//		
-////		for (Person key : distances.keySet())
-////			System.out.println(key+" "+distances.get(key));
-//
-//		
-//		System.out.println("\n");
-//		
-//		for (Person p : path)
-//			System.out.print(p+" --> ");
 	}
 	
-	public void shortest(Person origin, Person target)
+	private HashMap<Person, Integer> heightMap(Person origin)
+	{
+		HashMap<Person, Integer> height = new HashMap<Person, Integer>();
+		HashMap<Person, Boolean> visited = new HashMap<Person, Boolean>();
+
+
+		for (String key : graph.keySet())
+		{
+			height.put(graph.get(key), -1);
+			visited.put(graph.get(key), false);
+		}
+		
+		System.out.println("\n");
+		for (Person key : height.keySet())
+			System.out.println(key+" "+height.get(key)+" "+visited.get(key));
+		
+		height.put(origin, 0);
+		visited.put(origin, true);
+		
+		System.out.println("\n");
+		for (Person key : height.keySet())
+			System.out.println(key+" "+height.get(key)+" "+visited.get(key));
+		
+		
+		
+		
+		Person current = origin;
+		boolean cont = true;
+		while (cont)
+		{
+			for (Person p : current.neighbors)
+			{
+				if (visited.get(p) == false)
+				{
+					height.put(p, height.get(current)+1);
+					visited.put(p, true);
+				}
+			}
+			
+			cont = false;
+			for (Person p : current.neighbors)
+			{
+				if (visited.get(p) == false)
+				{
+					cont = true;
+				}
+			}
+			
+			int min = 99999999;
+			
+			for (Person p : height.keySet())
+			{
+				if ((height.get(p) >= 0) && (height.get(p) <= min))
+				{
+					current = p;
+				}
+			}
+		}
+		
+		
+		System.out.println("\n");
+		for (Person key : height.keySet())
+			System.out.println(key+" "+height.get(key)+" "+visited.get(key));
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return null;	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private void shortest(Person origin, Person target)
 	{
 		System.out.println("test");
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
