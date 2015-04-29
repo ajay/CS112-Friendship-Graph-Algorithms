@@ -9,6 +9,20 @@ public class Graph
 	HashMap<String, Person> graph = new HashMap<String, Person>();
 
 	///// Build Graph
+	public Graph(ArrayList<Person> clique)
+	{
+		for (Person p : clique)
+		{
+			Person newP = new Person(p.name, p.college);
+			graph.put(newP.name, newP);
+		}
+				
+		for (Person p: clique)
+			for (Person n : p.neighbors)
+				if (clique.contains(n))
+					graph.get(p.name).neighbors.add(graph.get(n.name));
+	}
+	
 	public Graph(String graphFile) throws FileNotFoundException
 	{
 		if (graphFile == null)
@@ -52,7 +66,6 @@ public class Graph
 		neighbors = graph.get(parts[1]).neighbors;
 		neighbors.add(graph.get(parts[0]));
 	}
-
 	
 	///// Print Graph
 	public void printGraph()
@@ -61,6 +74,35 @@ public class Graph
 		for (String key : graph.keySet())
 		{
 			System.out.printf( "%-15s %-25s -->     %s %n", key, graph.get(key), graph.get(key).neighbors);
+		}
+	}
+
+	public void printGraphFile()
+	{
+		ArrayList<Person> unvisited = new ArrayList<Person>();
+		
+		System.out.println();
+		System.out.println(graph.size());
+		for (String key : graph.keySet())
+		{
+			
+			if (graph.get(key).college != null)
+				System.out.println(graph.get(key).name + "|y|" + graph.get(key).college);
+			else System.out.println(graph.get(key).name + "|n");
+			unvisited.add(graph.get(key));
+		}		
+		
+		for (String key : graph.keySet())
+		{
+			Person current = graph.get(key);
+			for (Person p : current.neighbors)
+			{
+				if (unvisited.contains(p))
+				{
+					System.out.println(current.name + "|" + p.name);
+				}
+			}
+			unvisited.remove(current);
 		}
 	}
 	
@@ -78,7 +120,7 @@ public class Graph
 			personOne = sc.nextLine();
 			if (graph.containsKey(personOne.toLowerCase()))
 				goodName = true;
-			else System.out.println("'"+personOne+"' is not a valid person");
+			else System.out.println("'" + personOne + "' is not a valid person");
 		}
 		
 		goodName = false;
@@ -88,9 +130,9 @@ public class Graph
 			personTwo = sc.nextLine();		
 			if (graph.containsKey(personTwo.toLowerCase()))
 				goodName = true;
-			else System.out.println("\n'"+personTwo+"' is not a valid person");
+			else System.out.println("\n'" + personTwo + "' is not a valid person");
 		}
-		
+
 		Person origin = graph.get(personOne.toLowerCase());
 		Person target = graph.get(personTwo.toLowerCase());
 		
@@ -159,38 +201,75 @@ public class Graph
 			System.out.print(" --> "+p.name);
 		
 		System.out.print("\n");
-
 		
 //		System.out.println("\n");
 //		for (Person key : distances.keySet())
 //			System.out.printf( "%-23s %5d %8s %n", key, distances.get(key), !unvisited.contains(key));
 	}
 	
-	public void 
+	public void cliques()
+	{
+		Scanner sc = new Scanner(System.in);
+		String school = null;
+		
+		boolean goodSchool = false;
+		while (!goodSchool)
+		{
+			System.out.print("\nEnter the name of the school to find cliques: ");
+			school = sc.nextLine();
+			for (String key : graph.keySet())
+			{
+				if (school.equals(graph.get(key).college))
+					goodSchool = true;
+			}
+			if (!goodSchool)
+				System.out.println("There exist no cliques at this school: " + school);
+		}
+
+		cliquesHelper(school);
+	}
 	
-	
-	
-	
-	
+	private void cliquesHelper(String school)
+	{
+		ArrayList<Person> unvisited = new ArrayList<Person>();
+		ArrayList<Person> clique = new ArrayList<Person>();
+		ArrayList<Person> q = new ArrayList<Person>();
+		
+		for (String key : graph.keySet())
+			if (school.equals(graph.get(key).college))
+				unvisited.add(graph.get(key));
+
+		int count = 1;
+		Person current = null;
+
+		while (!unvisited.isEmpty())
+		{
+			q.add(unvisited.remove(0));
+			clique.add(q.get(0));
+
+			while (!q.isEmpty())
+			{
+				if (!q.isEmpty())
+					current = q.remove(0);
+
+				for (Person p : current.neighbors)
+				{
+					if (unvisited.contains(p))
+					{
+						unvisited.remove(p);
+						clique.add(p);
+						q.add(p);
+					}
+				}
+			}
+
+			Graph cliqueGraph = new Graph(clique);
+
+			System.out.print("\nClique " + count + ": ");
+			cliqueGraph.printGraphFile();
+			System.out.println();
+			clique.clear();
+			count++;
+		}	
+	}	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

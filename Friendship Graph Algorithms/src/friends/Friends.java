@@ -1,3 +1,6 @@
+// Ajay Srivatsava (as1877)
+// Srihari Chekuri (svc31)
+
 package friends;
 
 import java.util.*;
@@ -38,12 +41,16 @@ public class Friends
 			System.out.println(  "(3) Connectors");
 			System.out.println(  "(4) Quit");
 			System.out.println(  "(5) Print Out Graph");
+			System.out.println(  "(6) Print Out Graph File");
 			System.out.print(    "Enter Option --> ");
 			int option = sc.nextInt();
 			
 			if (option == 1)
 				g.shortestChain();
 			
+			if (option == 2)
+				g.cliques();
+
 			if (option == 4)
 				cont = false;
 			
