@@ -9,7 +9,7 @@ public class Friends
 	public static void main(String[] args)
 	{
 		Scanner sc = new Scanner(System.in);
-		Graph g = new Graph();
+		Graph g = null;
 
 		boolean goodFile = false;
 		while (!goodFile)

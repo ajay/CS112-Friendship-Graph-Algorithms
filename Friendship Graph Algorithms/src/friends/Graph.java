@@ -12,10 +12,6 @@ public class Graph
 	HashMap<String, Person> graph = new HashMap<String, Person>();
 
 	///// Build Graph
-	public Graph()
-	{
-	}
-	
 	public Graph(String graphFile) throws FileNotFoundException
 	{
 		if (graphFile == null)
@@ -101,109 +97,48 @@ public class Graph
 		Person origin = graph.get(personOne);
 		Person target = graph.get(personTwo);
 		
-		HashMap<Person, Integer> height = heightMap(origin);
-		
-//		shortest(origin, target);
-		
-		
+		shortest(origin, target);
 	}
-	
-	private HashMap<Person, Integer> heightMap(Person origin)
-	{
-		HashMap<Person, Integer> height = new HashMap<Person, Integer>();
-		HashMap<Person, Boolean> visited = new HashMap<Person, Boolean>();
-
-
-		for (String key : graph.keySet())
-		{
-			height.put(graph.get(key), -1);
-			visited.put(graph.get(key), false);
-		}
-		
-		System.out.println("\n");
-		for (Person key : height.keySet())
-			System.out.println(key+" "+height.get(key)+" "+visited.get(key));
-		
-		height.put(origin, 0);
-		visited.put(origin, true);
-		
-		System.out.println("\n");
-		for (Person key : height.keySet())
-			System.out.println(key+" "+height.get(key)+" "+visited.get(key));
-		
-		
-		
-		
-		Person current = origin;
-		boolean cont = true;
-		while (cont)
-		{
-			for (Person p : current.neighbors)
-			{
-				if (visited.get(p) == false)
-				{
-					height.put(p, height.get(current)+1);
-					visited.put(p, true);
-				}
-			}
-			
-			cont = false;
-			for (Person p : current.neighbors)
-			{
-				if (visited.get(p) == false)
-				{
-					cont = true;
-				}
-			}
-			
-			int min = 99999999;
-			
-			for (Person p : height.keySet())
-			{
-				if ((height.get(p) >= 0) && (height.get(p) <= min))
-				{
-					current = p;
-				}
-			}
-		}
-		
-		
-		System.out.println("\n");
-		for (Person key : height.keySet())
-			System.out.println(key+" "+height.get(key)+" "+visited.get(key));
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		return null;	
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	private void shortest(Person origin, Person target)
 	{
-		System.out.println("test");
-	}
+		ArrayList<Person> unvisited = new ArrayList<Person>();
+		ArrayList<Person> q = new ArrayList<Person>();
+		HashMap<Person, Integer> distances = new HashMap<Person, Integer>();
+
+		for (String key : graph.keySet())
+		{
+			unvisited.add(graph.get(key));
+			distances.put(graph.get(key), -1);
+		}
+		
+		Person current = origin;
+		unvisited.remove(current);
+		distances.put(current, 0);
+		
+		while ((!q.isEmpty()) || (!unvisited.isEmpty()))
+		{
+			for(Person p : current.neighbors)
+			{
+				if (unvisited.contains(p))
+				{
+					unvisited.remove(p);
+					q.add(p);
+					distances.put(p, distances.get(current)+1);
+				}
+			}
+			if (!q.isEmpty())
+				current = q.remove(0);
+			else if (!unvisited.isEmpty())
+				break;
+		}
+
+	System.out.println("\n");
+	for (Person key : distances.keySet())
+		System.out.printf( "%-23s %5d %8s %n", key, distances.get(key), !unvisited.contains(key));
+	}	
 }
+
 
 
 
