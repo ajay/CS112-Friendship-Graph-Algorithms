@@ -4,9 +4,6 @@ import java.util.*;
 import java.io.*;
 import java.lang.*;
 
-//No multiples edges allowed
-//No self loops allowed
-
 public class Graph
 {
 	HashMap<String, Person> graph = new HashMap<String, Person>();
@@ -105,11 +102,14 @@ public class Graph
 		ArrayList<Person> unvisited = new ArrayList<Person>();
 		ArrayList<Person> q = new ArrayList<Person>();
 		HashMap<Person, Integer> distances = new HashMap<Person, Integer>();
+		HashMap<Person, Person> previous = new HashMap<Person, Person>();
+		ArrayList<Person> path = new ArrayList<Person>();
 
 		for (String key : graph.keySet())
 		{
 			unvisited.add(graph.get(key));
 			distances.put(graph.get(key), -1);
+			previous.put(graph.get(key), null);
 		}
 		
 		Person current = origin;
@@ -125,17 +125,41 @@ public class Graph
 					unvisited.remove(p);
 					q.add(p);
 					distances.put(p, distances.get(current)+1);
+					previous.put(p, current);
 				}
 			}
+
 			if (!q.isEmpty())
 				current = q.remove(0);
 			else if (!unvisited.isEmpty())
 				break;
 		}
 
-	System.out.println("\n");
-	for (Person key : distances.keySet())
-		System.out.printf( "%-23s %5d %8s %n", key, distances.get(key), !unvisited.contains(key));
+		if (distances.get(target) == -1)
+		{
+			System.out.println("\nThere exists no shortest path from "+origin.name+" to "+target.name+".");
+			return;
+		}
+		
+		System.out.println("\nThe shortest path from "+origin.name+" to "+target.name+" is: ");
+		
+		path.add(target);
+		while (target != origin)
+		{
+			target = previous.get(target);
+			path.add(0, target);
+		}
+		
+		System.out.print(path.remove(0).name);
+		
+		for (Person p : path)
+			System.out.print(" --> "+p.name);
+		
+		System.out.print("\n");
+		
+//		System.out.println("\n");
+//		for (Person key : distances.keySet())
+//			System.out.printf( "%-23s %5d %8s %n", key, distances.get(key), !unvisited.contains(key));
 	}	
 }
 
