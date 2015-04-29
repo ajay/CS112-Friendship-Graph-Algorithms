@@ -91,8 +91,8 @@ public class Graph
 			else System.out.println("\n'"+personTwo+"' is not a valid person");
 		}
 		
-		Person origin = graph.get(personOne);
-		Person target = graph.get(personTwo);
+		Person origin = graph.get(personOne.toLowerCase());
+		Person target = graph.get(personTwo.toLowerCase());
 		
 		shortest(origin, target);
 	}
@@ -101,9 +101,9 @@ public class Graph
 	{
 		ArrayList<Person> unvisited = new ArrayList<Person>();
 		ArrayList<Person> q = new ArrayList<Person>();
+		ArrayList<Person> path = new ArrayList<Person>();
 		HashMap<Person, Integer> distances = new HashMap<Person, Integer>();
 		HashMap<Person, Person> previous = new HashMap<Person, Person>();
-		ArrayList<Person> path = new ArrayList<Person>();
 
 		for (String key : graph.keySet())
 		{
@@ -111,11 +111,11 @@ public class Graph
 			distances.put(graph.get(key), -1);
 			previous.put(graph.get(key), null);
 		}
-		
+
 		Person current = origin;
 		unvisited.remove(current);
 		distances.put(current, 0);
-		
+
 		while ((!q.isEmpty()) || (!unvisited.isEmpty()))
 		{
 			for(Person p : current.neighbors)
@@ -137,12 +137,16 @@ public class Graph
 
 		if (distances.get(target) == -1)
 		{
-			System.out.println("\nThere exists no shortest path from "+origin.name+" to "+target.name+".");
+			System.out.println("\nThere exists no path from " + origin.name + " to " + target.name + ".");
 			return;
 		}
-		
-		System.out.println("\nThe shortest path from "+origin.name+" to "+target.name+" is: ");
-		
+
+		else if (distances.get(target) == 0)
+			System.out.println("\nThe shortest path from " + origin.name + " to (him/her)self is just (him/her)self: ");
+
+		else
+			System.out.println("\nThe shortest path from " + origin.name + " to " + target.name + " is: ");
+			
 		path.add(target);
 		while (target != origin)
 		{
@@ -151,16 +155,23 @@ public class Graph
 		}
 		
 		System.out.print(path.remove(0).name);
-		
 		for (Person p : path)
 			System.out.print(" --> "+p.name);
 		
 		System.out.print("\n");
+
 		
 //		System.out.println("\n");
 //		for (Person key : distances.keySet())
 //			System.out.printf( "%-23s %5d %8s %n", key, distances.get(key), !unvisited.contains(key));
-	}	
+	}
+	
+	public void 
+	
+	
+	
+	
+	
 }
 
 
