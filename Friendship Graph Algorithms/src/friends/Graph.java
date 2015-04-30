@@ -184,7 +184,10 @@ public class Graph
 		}
 
 		else if (distances.get(target) == 0)
-			System.out.println("\nThe shortest path from " + origin.name + " to (him/her)self is just (him/her)self: ");
+		{
+			System.out.println("\nYou are already friends with yourself, don't be silly.");
+			return;
+		}
 
 		else
 			System.out.println("\nThe shortest path from " + origin.name + " to " + target.name + " is: ");
@@ -207,6 +210,7 @@ public class Graph
 //			System.out.printf( "%-23s %5d %8s %n", key, distances.get(key), !unvisited.contains(key));
 	}
 	
+	///// Cliques 
 	public void cliques()
 	{
 		Scanner sc = new Scanner(System.in);
@@ -271,5 +275,93 @@ public class Graph
 			clique.clear();
 			count++;
 		}	
-	}	
+	}
+	
+	public void connectors()
+	{
+		ArrayList<Person> connectors = new ArrayList<Person>();
+		Person origin = null;
+		
+		for (String poop : graph.keySet())
+		{
+			origin = graph.get(poop);
+		
+			Person current = origin;
+			int personCount = 0;
+			
+			ArrayList<Person> unvisitedOrigin = new ArrayList<Person>();
+			ArrayList<Person> qOrigin = new ArrayList<Person>();
+				
+			for (String key : graph.keySet())
+				unvisitedOrigin.add(graph.get(key));
+			
+			unvisitedOrigin.remove(current);
+	
+			while ((!qOrigin.isEmpty()) || (!unvisitedOrigin.isEmpty()))
+			{
+				for(Person p : current.neighbors)
+				{
+					if (unvisitedOrigin.contains(p))
+					{
+						unvisitedOrigin.remove(p);
+						qOrigin.add(p);
+					}
+				}
+	
+				if (!qOrigin.isEmpty())
+					current = qOrigin.remove(0);
+				else if (!unvisitedOrigin.isEmpty())
+					break;
+			}
+
+			personCount = unvisitedOrigin.size();
+
+			for (String shit : graph.keySet())
+			{
+				ArrayList<Person> unvisited = new ArrayList<Person>();
+				ArrayList<Person> q = new ArrayList<Person>();
+
+				current = origin;
+				Person notAllowed = graph.get(shit);
+
+				for (String key : graph.keySet())
+					unvisited.add(graph.get(key));
+
+				unvisited.remove(current);
+				unvisited.remove(notAllowed);
+
+				while ((!q.isEmpty()) || (!unvisited.isEmpty()))
+				{
+					for(Person p : current.neighbors)
+					{
+						if (unvisited.contains(p))
+						{
+							unvisited.remove(p);
+							q.add(p);
+						}
+					}
+		
+					if (!q.isEmpty())
+						current = q.remove(0);
+					else if (!unvisited.isEmpty())
+						break;
+				}
+
+				if (unvisited.size() > personCount)
+					if (!connectors.contains(notAllowed))
+						connectors.add(notAllowed);
+
+//				System.out.println("\n");
+//				System.out.println(notAllowed);
+//				for (String key : graph.keySet())
+//					System.out.printf( "%-15s %8s %n", key, !unvisited.contains(graph.get(key)));
+			}
+		}
+		
+		System.out.println("\nThe Connectors in this graph are: ");
+		System.out.print(connectors.remove(0).name);
+		for (Person p : connectors)
+			System.out.print(", " + p.name);
+		System.out.println();
+	}
 }

@@ -43,19 +43,39 @@ public class Friends
 			System.out.println(  "(5) Print Out Graph");
 			System.out.println(  "(6) Print Out Graph File");
 			System.out.print(    "Enter Option --> ");
-			int option = sc.nextInt();
+			
+			String input = null;
+			int option = 0;
+			try
+			{
+				input = sc.next();
+				option = Integer.parseInt(input);
+				if ((option <=0) || (option >=7))
+					System.out.println(option+" is not in the valid range for input.");
+			}
+			catch (Exception e)
+			{
+				System.out.println("'"+input+"' is not a valid input.");
+				sc.nextLine();
+			}
 			
 			if (option == 1)
 				g.shortestChain();
 			
 			if (option == 2)
 				g.cliques();
+			
+			if (option == 3)
+				g.connectors();
 
 			if (option == 4)
 				cont = false;
 			
 			if (option == 5)
 				g.printGraph();
+			
+			if (option == 6)
+				g.printGraphFile();
 		}
 		sc.close();
 		System.exit(0);
