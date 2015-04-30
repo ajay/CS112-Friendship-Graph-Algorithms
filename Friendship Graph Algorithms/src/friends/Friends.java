@@ -5,7 +5,6 @@ package friends;
 
 import java.util.*;
 import java.io.*;
-import java.lang.*;
 
 public class Friends
 {
@@ -34,15 +33,21 @@ public class Friends
 		}
 
 		boolean cont = true;
+		boolean first = true;
 		while (cont)
 		{
-			System.out.println("\n(1) Shortest Intro Chain");
-			System.out.println(  "(2) Cliques at School");
-			System.out.println(  "(3) Connectors");
-			System.out.println(  "(4) Quit");
-			System.out.println(  "(5) Print Out Graph");
-			System.out.println(  "(6) Print Out Graph File");
-			System.out.print(    "Enter Option --> ");
+			System.out.println();
+			
+			if (!first)
+				System.out.println("------------------------");
+			
+			System.out.println("(1) Shortest Intro Chain");
+			System.out.println("(2) Cliques at School");
+			System.out.println("(3) Connectors");
+			System.out.println("(4) Quit");
+			System.out.println("(5) Print Out Graph");
+			System.out.println("(6) Print Out Graph File");
+			System.out.print(  "Enter Option --> ");
 			
 			String input = null;
 			int option = 0;
@@ -76,6 +81,8 @@ public class Friends
 			
 			if (option == 6)
 				g.printGraphFile();
+			
+			first = false;
 		}
 		sc.close();
 		System.exit(0);

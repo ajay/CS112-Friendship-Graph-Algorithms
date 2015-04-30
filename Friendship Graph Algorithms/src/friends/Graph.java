@@ -2,7 +2,6 @@ package friends;
 
 import java.util.*;
 import java.io.*;
-import java.lang.*;
 
 public class Graph
 {
@@ -71,6 +70,8 @@ public class Graph
 	public void printGraph()
 	{
 		System.out.println();
+		System.out.println("Name (key)      Person Object                     Neighbors");
+		System.out.println("----------      -------------                     ---------");
 		for (String key : graph.keySet())
 		{
 			System.out.printf( "%-15s %-25s -->     %s %n", key, graph.get(key), graph.get(key).neighbors);
@@ -105,7 +106,7 @@ public class Graph
 			unvisited.remove(current);
 		}
 	}
-	
+
 	///// Shortest Chain
 	public void shortestChain()
 	{
@@ -223,6 +224,13 @@ public class Graph
 			school = sc.nextLine();
 			for (String key : graph.keySet())
 			{
+				if (school.equals(""))
+				{
+					school = null;
+					goodSchool = true;
+					break;
+				}
+				
 				if (school.equals(graph.get(key).college))
 					goodSchool = true;
 			}
@@ -239,13 +247,26 @@ public class Graph
 		ArrayList<Person> clique = new ArrayList<Person>();
 		ArrayList<Person> q = new ArrayList<Person>();
 		
-		for (String key : graph.keySet())
-			if (school.equals(graph.get(key).college))
-				unvisited.add(graph.get(key));
-
+		if (school != null)
+		{
+			for (String key : graph.keySet())
+				if (school.equals(graph.get(key).college))
+					unvisited.add(graph.get(key));
+		}
+		
+		else
+		{
+			for (String key : graph.keySet())
+				if (graph.get(key).college == null)
+					unvisited.add(graph.get(key));
+		}
+		
 		int count = 1;
 		Person current = null;
 
+		if (school == null)
+			System.out.println("These are the cliques for people who do not attend any schools: ");
+		
 		while (!unvisited.isEmpty())
 		{
 			q.add(unvisited.remove(0));
@@ -268,7 +289,7 @@ public class Graph
 			}
 
 			Graph cliqueGraph = new Graph(clique);
-
+			
 			System.out.print("\nClique " + count + ": ");
 			cliqueGraph.printGraphFile();
 			System.out.println();
@@ -316,13 +337,13 @@ public class Graph
 
 			personCount = unvisitedOrigin.size();
 
-			for (String shit : graph.keySet())
+			for (String no : graph.keySet())
 			{
 				ArrayList<Person> unvisited = new ArrayList<Person>();
 				ArrayList<Person> q = new ArrayList<Person>();
 
 				current = origin;
-				Person notAllowed = graph.get(shit);
+				Person notAllowed = graph.get(no);
 
 				for (String key : graph.keySet())
 					unvisited.add(graph.get(key));
@@ -351,8 +372,8 @@ public class Graph
 					if (!connectors.contains(notAllowed))
 						connectors.add(notAllowed);
 
-//				System.out.println("\n");
-//				System.out.println(notAllowed);
+//				System.out.println("\nOrigin: " + origin);
+//				System.out.println(  "Person Not Allowed: " + notAllowed);
 //				for (String key : graph.keySet())
 //					System.out.printf( "%-15s %8s %n", key, !unvisited.contains(graph.get(key)));
 			}
