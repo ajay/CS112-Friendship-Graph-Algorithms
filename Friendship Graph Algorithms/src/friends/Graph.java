@@ -298,55 +298,53 @@ public class Graph
 		}	
 	}
 	
+	///// Connectors
 	public void connectors()
 	{
 		ArrayList<Person> connectors = new ArrayList<Person>();
-		Person origin = null;
 		
 		for (String poop : graph.keySet())
 		{
-			origin = graph.get(poop);
-		
-			Person current = origin;
-			int personCount = 0;
+			ArrayList<Person> unvisited = new ArrayList<Person>();
+			ArrayList<Person> q = new ArrayList<Person>();
 			
-			ArrayList<Person> unvisitedOrigin = new ArrayList<Person>();
-			ArrayList<Person> qOrigin = new ArrayList<Person>();
-				
 			for (String key : graph.keySet())
-				unvisitedOrigin.add(graph.get(key));
+				unvisited.add(graph.get(key));
 			
-			unvisitedOrigin.remove(current);
+			Person origin = graph.get(poop);
+			Person current = origin;
+			
+			unvisited.remove(current);
 	
-			while ((!qOrigin.isEmpty()) || (!unvisitedOrigin.isEmpty()))
+			while ((!q.isEmpty()) || (!unvisited.isEmpty()))
 			{
 				for(Person p : current.neighbors)
 				{
-					if (unvisitedOrigin.contains(p))
+					if (unvisited.contains(p))
 					{
-						unvisitedOrigin.remove(p);
-						qOrigin.add(p);
+						unvisited.remove(p);
+						q.add(p);
 					}
 				}
 	
-				if (!qOrigin.isEmpty())
-					current = qOrigin.remove(0);
-				else if (!unvisitedOrigin.isEmpty())
+				if (!q.isEmpty())
+					current = q.remove(0);
+				else if (!unvisited.isEmpty())
 					break;
 			}
 
-			personCount = unvisitedOrigin.size();
+			int personCount = unvisited.size();
 
 			for (String no : graph.keySet())
 			{
-				ArrayList<Person> unvisited = new ArrayList<Person>();
-				ArrayList<Person> q = new ArrayList<Person>();
-
-				current = origin;
-				Person notAllowed = graph.get(no);
+				unvisited.clear();
+				q.clear();
 
 				for (String key : graph.keySet())
 					unvisited.add(graph.get(key));
+				
+				current = origin;
+				Person notAllowed = graph.get(no);
 
 				unvisited.remove(current);
 				unvisited.remove(notAllowed);
