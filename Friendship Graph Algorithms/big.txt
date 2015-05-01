@@ -2,9 +2,9 @@
 a|y|rutgers
 b|y|rutgers
 c|y|rutgers
-d|y|penn state
-e|y|rutgers
-f|y|rutgers
+d|y|berkley
+e|y|ucla
+f|y|ucla
 g|y|rutgers
 h|n
 i|y|ucla
@@ -18,7 +18,7 @@ p|n
 q|y|berkley
 r|y|berkley
 s|y|penn state
-t|y|berkley
+t|y|penn state
 u|y|rutgers
 v|y|penn state
 w|y|ucla
@@ -51,12 +51,10 @@ m|n
 o|p
 p|q
 s|t
-s|x
 t|z
 t|v
 t|u
 u|x
-v|x
 x|y
 ab|cd
 ab|ef

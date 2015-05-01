@@ -79,16 +79,16 @@ public class Graph
 	public void printGraph()
 	{
 		ArrayList<String> sort = new ArrayList<String>();
-		
+
 		for (String key : graph.keySet())
 			sort.add(key);
 
 		Collections.sort(sort);
-		
+
 		System.out.println();
 		System.out.println("Name (key)      Person Object                     Neighbors");
 		System.out.println("----------      -------------                     ---------");
-				
+
 		for (String key : sort)
 			System.out.printf( "%-15s %-25s -->     %s %n", key, graph.get(key), graph.get(key).neighbors);
 	}
@@ -100,11 +100,11 @@ public class Graph
 
 		for (String key : graph.keySet())
 			sort.add(key);
-		
+
 		Collections.sort(sort);
-		
+
 		System.out.println("\n" + graph.size());
-				
+
 		for (String key : sort)
 		{
 
