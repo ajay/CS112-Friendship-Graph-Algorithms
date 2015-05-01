@@ -17,9 +17,8 @@ public class Friends
 		while (!goodFile)
 		{
 			goodFile = true;
-//			System.out.print("Enter the friends graph file: ");
-//			String graphFile = sc.next();
-			String graphFile = "graph.txt";
+			System.out.print("Enter the friends graph file: ");
+			String graphFile = sc.next();
 
 			try
 			{

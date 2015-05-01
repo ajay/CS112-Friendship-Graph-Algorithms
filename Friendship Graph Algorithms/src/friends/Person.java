@@ -1,3 +1,6 @@
+// Ajay Srivatsava (as1877)
+// Srihari Chekuri (svc31)
+
 package friends;
 
 import java.util.*;
@@ -21,6 +24,6 @@ public class Person
 
 	public String toString() 
 	{
-		return "(" + name + ", " + college + ")";
+		return ("(" + name + ", " + college + ")");
 	}
 }
